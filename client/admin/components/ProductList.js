@@ -12,6 +12,8 @@ class ProductList extends Component {
     };
   }
 
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -28,7 +30,7 @@ class ProductList extends Component {
                     </Card.Body>
                     <ListGroup>
                       <ListGroupItem>Price: {Utils.formatPrice(item.price)}</ListGroupItem>
-                      <ListGroupItem>Date: {item.date}</ListGroupItem>
+                      <ListGroupItem className={classes.listDate}>Date: {Utils.formatDate(item.date)}</ListGroupItem>
                     </ListGroup>
                   </Card>
                 </Col>
@@ -48,9 +50,17 @@ class ProductList extends Component {
 const styles = {
   itemCard: {
     margin: '1vh 0',
+    textAlign: 'center',
   },
   itemFace: {
-    textAlign: 'center',
+    // textAlign: 'center',
+    minHeight: '15vh',
+  },
+  listDate: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    minHeight: '20vh',
   },
   productList: {
     display: 'flex',
