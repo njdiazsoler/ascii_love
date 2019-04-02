@@ -12,6 +12,7 @@ const formatDate = (completeDate) => {
   if(diffDays <= 7) {
     return `${diffDays} days ago`
   }
+  // Should the function return UTC or GMT accordingly?
   return completeDate
 }
 

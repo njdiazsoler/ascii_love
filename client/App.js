@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Image } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import ProductList from './admin/components/ProductList';
-import injectSyle from 'react-jss';
 import { Fade } from 'react-reveal';
+import Colours from './resources/Colours';
+import injectStyle from 'react-jss';
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class App extends Component {
     }
   }
 
-
   componentDidMount = async () => {
     try {
       let data = [];
@@ -25,7 +25,7 @@ class App extends Component {
         .then(response => response.json())
         .then(nextData = await this.getNextPageData(this.state.curPage + 1));
       data.push(curData)
-      this.setState({ data: data, nextData: nextData, isLoading: false });
+      this.setState({ data: curData, nextData: nextData, isLoading: false });
       window.addEventListener('scroll', this.onScroll, false);
     } catch (error) {
       throw console.log(`error is ${error}`)
@@ -47,56 +47,58 @@ class App extends Component {
 
   onScroll = () => {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1)) {
-      let { data } = this.state;
-      data.push(this.state.nextData);
+      let { nextData, data } = this.state;
+      nextData.forEach(item => {
+        data.push(item);
+      })
       this.setState({ data: data });
-      this.showData();
+      // this.showData();
     }
   }
-
-  showData = () => {
-    let { data } = this.state;
-    for (let i = 0; i <= data.length; i++) {
-      return (
-        <Fade key={`fade.${i}`} when={!this.state.isLoading} appear={!this.state.isLoading}>
-          <ProductList key={`list.${i}`} data={data[i]} />
-          <Image key={`img.${i}`} src='../../resources/200.jpg' />
-        </Fade>
-      )
-    }
-  }
-
-  showNextPage = () => {
-    return (
-      <ProductList data={this.state.nextPageData} />
-    )
-  }
-
 
 
   render() {
-    const nextPageButton = {
-      padding: '2vh 1vw',
-      textAlign: 'center',
-    }
+    const { classes } = this.props
     return (
-      <div>
-        {this.state.isLoading ?
-          <img src='https://upload.wikimedia.org/wikipedia/commons/6/66/Loadingsome.gif' alt='loading...' style={{ maxWidth: '50vw', maxHeight: '50vh' }}></img>
-          :
-          this.showData()
-        }
-        <div style={nextPageButton}>
-          <Button
-            onClick={this.showNextPage}
-          >Next Page
-        </Button>
-        </div>
-      </div>
+      <Container className={classes.mainContainer}>
+        <header>
+          <h1 className={classes.header}>Products Grid</h1>
+
+          <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our
+          selection of ascii faces in an exciting range of sizes and prices.</p>
+
+          <p>But first, a word from our sponsors:</p>
+          <script>document.write('<img className="ad" src="/ads/?r=' + Math.floor(Math.random() * 1000) + '" />');</script>
+        </header>
+
+        <section className="products">
+          <p>
+            ... products go here ...
+          </p>
+          {this.state.isLoading ?
+            <img src='https://upload.wikimedia.org/wikipedia/commons/6/66/Loadingsome.gif' alt='loading...' style={{ maxWidth: '50vw', maxHeight: '50vh' }}></img>
+            :
+            <Fade when={!this.state.isLoading} appear={!this.state.isLoading}>
+              <ProductList data={this.state.data} />
+            </Fade>
+          }
+        </section>
+      </Container>
     )
   }
 }
 
+const styles = {
+  header: {
+    fontFamily: 'Sansita, sans-serif',
+  },
+  mainContainer: {
+    backgroundColor: Colours.tertiary,
+    fontFamily: 'Hind Siliguri, sans-serif',
+    fontFamily: 'Martel, serif'
+  }
+}
 
+const StyledApp = injectStyle(styles)(App);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<StyledApp />, document.getElementById('root'));

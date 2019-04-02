@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import injectStyle from 'react-jss';
-import { Col, Container, Card, ListGroup, ListGroupItem, Row, CardDeck } from 'react-bootstrap';
+import { Col, Container, Card, Image, ListGroup, ListGroupItem, CardDeck } from 'react-bootstrap';
 const Utils = require('../../resources/Utils.js')
 
 class ProductList extends Component {
@@ -12,33 +12,51 @@ class ProductList extends Component {
     };
   }
 
-
-
   render() {
+    console.log(this.props.data)
     const { classes } = this.props;
     return (
       <Container>
         <CardDeck>
-          {/* <Container className={classes.productList}> */}
           {this.props.data ?
-            this.props.data.map(item => {
+            this.props.data.map((item, index) => {
+              if ((index + 2) % 20 !== 1) {
+                return (
+                  <Col key={`col${item.id}`} md={3} className={classes.itemCard}>
+                    <Card key={`card${item.id}`}>
+                      <Card.Body className={classes.itemFace} style={{ fontSize: item.size }} key={`body${item.id}`}>
+                        {item.face}
+                      </Card.Body>
+                      <ListGroup>
+                        <ListGroupItem>Price: {Utils.formatPrice(item.price)}</ListGroupItem>
+                        <ListGroupItem className={classes.listDate}>Date: {Utils.formatDate(item.date)}</ListGroupItem>
+                      </ListGroup>
+                    </Card>
+                  </Col>
+                )
+              }
               return (
-                <Col key={item.id} md={3} className={classes.itemCard}>
-                  <Card key={item.id}>
-                    <Card.Body className={classes.itemFace} style={{ fontSize: item.size }} key={item.id}>
-                      {item.face}
-                    </Card.Body>
-                    <ListGroup>
-                      <ListGroupItem>Price: {Utils.formatPrice(item.price)}</ListGroupItem>
-                      <ListGroupItem className={classes.listDate}>Date: {Utils.formatDate(item.date)}</ListGroupItem>
-                    </ListGroup>
-                  </Card>
-                </Col>
+                <Fragment>
+                  <Col key={`col${item.id}`} md={3} className={classes.itemCard}>
+                    <Card key={`card${item.id}`}>
+                      <Card.Body className={classes.itemFace} style={{ fontSize: item.size }} key={`body${item.id}`}>
+                        {item.face}
+                      </Card.Body>
+                      <ListGroup>
+                        <ListGroupItem>Price: {Utils.formatPrice(item.price)}</ListGroupItem>
+                        <ListGroupItem className={classes.listDate}>Date: {Utils.formatDate(item.date)}</ListGroupItem>
+                      </ListGroup>
+                    </Card>
+                  </Col>
+                  <Col key={`imgcol${item.id}`} md={12} >
+                    <Image key={`img${item.id}`} src={`/ads/?r=${Math.floor(Math.random() * 1000)}`} />
+                  </Col>
+                </Fragment>
               )
-            }) :
+            })
+            :
             <div></div>
           }
-          {/* </Container> */}
         </CardDeck>
       </Container>
 
@@ -51,6 +69,7 @@ const styles = {
   itemCard: {
     margin: '1vh 0',
     textAlign: 'center',
+    padding: '1vh 0'
   },
   itemFace: {
     // textAlign: 'center',
