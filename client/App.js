@@ -60,42 +60,42 @@ class App extends Component {
   render() {
     const { classes } = this.props
     return (
-      <Container className={classes.mainContainer}>
-        <header>
-          <h1 className={classes.header}>Products Grid</h1>
+      <div className={classes.mainContainer}>
+        <Container>
+          <header>
+            <h1 className={classes.header}>Products Grid</h1>
 
-          <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our
+            <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our
           selection of ascii faces in an exciting range of sizes and prices.</p>
 
-          <p>But first, a word from our sponsors:</p>
-          <script>document.write('<img className="ad" src="/ads/?r=' + Math.floor(Math.random() * 1000) + '" />');</script>
-        </header>
+            {/* <p>But first, a word from our sponsors:</p>
+          <script>document.write('<img className="ad" src="/ads/?r=' + Math.floor(Math.random() * 1000) + '" />');</script> */}
+          </header>
 
-        <section className="products">
-          <p>
-            ... products go here ...
-          </p>
-          {this.state.isLoading ?
-            <img src='https://upload.wikimedia.org/wikipedia/commons/6/66/Loadingsome.gif' alt='loading...' style={{ maxWidth: '50vw', maxHeight: '50vh' }}></img>
-            :
-            <Fade when={!this.state.isLoading} appear={!this.state.isLoading}>
-              <ProductList data={this.state.data} />
-            </Fade>
-          }
-        </section>
-      </Container>
+          <section className="products">
+            {/* <p>... products go here ...</p> */}
+            {this.state.isLoading ?
+              <img src='https://upload.wikimedia.org/wikipedia/commons/6/66/Loadingsome.gif' alt='loading...' style={{ maxWidth: '50vw', maxHeight: '50vh' }}></img>
+              :
+              <Fade when={!this.state.isLoading} appear={!this.state.isLoading}>
+                <ProductList data={this.state.data} />
+              </Fade>
+            }
+          </section>
+        </Container>
+      </div>
     )
   }
 }
 
 const styles = {
   header: {
-    fontFamily: 'Sansita, sans-serif',
+
   },
   mainContainer: {
     backgroundColor: Colours.tertiary,
     fontFamily: 'Hind Siliguri, sans-serif',
-    fontFamily: 'Martel, serif'
+    minHeight: '100vh',
   }
 }
 

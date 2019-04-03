@@ -17,6 +17,7 @@ class ProductList extends Component {
     const { classes } = this.props;
     return (
       <Container>
+        
         <CardDeck>
           {this.props.data ?
             this.props.data.map((item, index) => {
@@ -48,8 +49,9 @@ class ProductList extends Component {
                       </ListGroup>
                     </Card>
                   </Col>
-                  <Col key={`imgcol${item.id}`} md={12} >
-                    <Image key={`img${item.id}`} src={`/ads/?r=${Math.floor(Math.random() * 1000)}`} />
+                  <Col key={`imgcol${item.id}`} md={12} className={classes.imageStyle} >
+                    <Image key={`img${item.id}`} src={`/ads/?r=${Math.floor(Math.random() * 1000)}`} 
+                     />
                   </Col>
                 </Fragment>
               )
@@ -66,6 +68,11 @@ class ProductList extends Component {
 }
 
 const styles = {
+  imageStyle: {
+    display: 'flex',
+    flexFlow: 'row',
+    justifyContent: 'center',
+  },
   itemCard: {
     margin: '1vh 0',
     textAlign: 'center',
@@ -79,7 +86,7 @@ const styles = {
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
-    minHeight: '20vh',
+    minHeight: '15vh',
   },
   productList: {
     display: 'flex',
