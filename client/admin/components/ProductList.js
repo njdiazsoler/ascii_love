@@ -28,14 +28,15 @@ class ProductList extends Component {
   TODOs:
   - Dropdown animation when clicking dropdown.
   - Fade animation when revealing new data.
-  - Fix ad animation: sometimes it doesn't load due to delay in receiving image
+  - Fix ad animation: sometimes it doesn't load due to delay in receiving image.
+  - Fix infinite scroll delay/flicker: when having more than 100 components in the dome, React may suffer from performance issues.
+    This can be solved easily by using libraries such as react-window or react-virtualized, but this assignment prevented me from using them.
   */
 
   componentDidMount = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/products?_page=${this.state.curPage}&_limit=20`)
       const body = await response.json();
-      // Blocking loop on purpose?
       const nextData = await this.getNextPageData();
       this.setState({ data: body, nextData: nextData, isLoading: false, dataLoaded: true, curPage: 2 });
       window.addEventListener('scroll', this.onScroll, false);
@@ -58,7 +59,6 @@ class ProductList extends Component {
       const response = await fetch(`http://localhost:3000/api/products?_page=${nextPage}&_limit=20`);
       const body = await response.json();
       if (body.length === 0) {
-        console.log('no more results!')
         this.setState({ moreToLoad: false });
         return null
       }
@@ -68,7 +68,6 @@ class ProductList extends Component {
     const body = await response.json();
     if (body.length === 0) {
       this.setState({ moreToLoad: false });
-      console.log('no more results!')
       return null
     }
     return body;
@@ -77,30 +76,31 @@ class ProductList extends Component {
   // onScroll Function to specify what happens when reaching the end of the page
 
   onScroll = async () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1)) {
-      this.setState({ dataLoaded: false });
-      let { nextData, data, curPage } = this.state;
-      nextData.forEach(item => {
-        data.push(item);
-      });
-      const newData = await this.getNextPageData();
-      this.setState({ data: data, nextData: newData, curPage: curPage + 1, dataLoaded: true });
-      return
+    if (!this.state.endOfPage) {
+      if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight)) {
+        this.setState({ dataLoaded: false, endOfPage: true });
+        const { nextData, data, curPage } = this.state;
+        nextData.forEach(item => {
+          data.push(item);
+        });
+        const newData = await this.getNextPageData();
+        this.setState({ data: data, nextData: newData, curPage: curPage + 1, dataLoaded: true, endOfPage: false });
+        return
+      }
     }
   }
 
-  // Reorder item list
+  // Reorder item list method. Get new sorted data and set sort in the state. getNextPageData method will use it for fetching
+  // next page data
 
   reorderList = async (e) => {
     e.persist();
     const sortBy = e.target.id;
-    await this.setState({ isLoading: true, dataLoaded: false, curPage: 1, data: [], nextData: [], sort: sortBy })
+    this.setState({ isLoading: true, dataLoaded: false, curPage: 1, data: [], nextData: [], sort: sortBy })
     const response = await fetch(`http://localhost:3000/api/products?_page=1&_limit=20&_sort=${this.state.sort}`);
-    console.log(this.state);
     const orderedData = await response.json();
     const nextOrderedData = await this.getNextPageData();
-    await this.setState({ data: orderedData, nextData: nextOrderedData, isLoading: false, curPage: this.state.curPage + 1, dataLoaded: true });
-    console.log(orderedData, nextOrderedData);
+    this.setState({ data: orderedData, nextData: nextOrderedData, isLoading: false, curPage: this.state.curPage + 1, dataLoaded: true });
   }
 
   render() {

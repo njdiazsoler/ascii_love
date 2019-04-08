@@ -37,12 +37,12 @@ const Header = (props) => {
             {/* NavLinks used as placeholders for icon functionality */}
             <Nav.Item>
               <Nav.Link className={classes.navText} href="#cart">
-              <FontAwesomeIcon size='md'  icon={faShoppingCart} />
+              <FontAwesomeIcon size='lg'  icon={faShoppingCart} />
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link className={classes.navText} href="#search">
-              <FontAwesomeIcon size='md' icon={faSearch} />
+              <FontAwesomeIcon size='lg' icon={faSearch} />
               </Nav.Link>
             </Nav.Item>
           </Nav>
@@ -67,7 +67,6 @@ const styles = {
     display: 'flex',
     flexFlow: 'row',
     justifyContent: 'flex-end',
-    overflow: 'hidden',
     left: '-10%',
     '@media screen and (max-width: 768px)': {
       display: 'flex',

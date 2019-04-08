@@ -1,19 +1,22 @@
-import React, { Fragment, useState } from 'react';
-import { Card, CardDeck, Col, Image, ListGroup, ListGroupItem } from "react-bootstrap";
+import React, { Fragment } from 'react';
+import { Card, CardDeck, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Fade } from 'react-reveal';
 import injectStyle from 'react-jss';
 import Utils from '../../resources/Utils.js';
 
+/* Card Handler
+Processes data received as props and returns a Card Deck. When the index of the item being processed is 19, the handler
+will return a card and then an image in a full row. */
+
 const CardHandler = (props) => {
   const { classes } = props
-
   return (
     <CardDeck style={{ alignItems: 'center', justifyContent: 'center'}}>
       {props.data ?
         props.data.map((item, index) => {
           let colSize = 3;
           if ((index + 2) % 20 !== 1) {
-            if(item.size >= 35 && item.face.length >=10){
+            if(item.size >= 35 && item.face.length >=9){
               colSize = 5;
             } else if (item.size < 18 && item.face.length < 10 && Utils.formatDate(item.date).length < 12){
               colSize = 2
@@ -81,7 +84,6 @@ const styles = {
     textAlign: 'center',
   },
   itemFace: {
-    // textAlign: 'center',
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
