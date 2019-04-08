@@ -33,7 +33,7 @@ class ProductList extends Component {
 
   componentDidMount = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/products?_page=1&_limit=20`)
+      const response = await fetch(`http://localhost:3000/api/products?_page=${this.state.curPage}&_limit=20`)
       const body = await response.json();
       // Blocking loop on purpose?
       const nextData = await this.getNextPageData();
