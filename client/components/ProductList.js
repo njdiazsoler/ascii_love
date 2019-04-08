@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Dropdown } from 'react-bootstrap';
-import { Fade } from 'react-reveal';
-import Colours from '../../resources/Colours';
 import injectStyle from 'react-jss';
+import { Fade } from 'react-reveal';
+import Colours from '../resources/Colours';
 import CardHandler from './CardHandler';
 import Spinner from './Spinner';
 

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Image } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import injectStyle from 'react-jss';
 import { Fade } from 'react-reveal';
-import Header from './admin/components/Header';
-import ProductList from './admin/components/ProductList';
-import Utils from '../client/resources/Utils'
+import Utils from '../client/resources/Utils';
+import Header from './components/Header';
+import ProductList from './components/ProductList';
 
 // Parent app.
 

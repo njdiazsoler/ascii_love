@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { Card, CardDeck, Col, ListGroup, ListGroupItem } from "react-bootstrap";
-import { Fade } from 'react-reveal';
 import injectStyle from 'react-jss';
-import Utils from '../../resources/Utils.js';
+import { Fade } from 'react-reveal';
+import Utils from '../resources/Utils.js';
 
 /* Card Handler
 Processes data received as props and returns a Card Deck. When the index of the item being processed is 19, the handler

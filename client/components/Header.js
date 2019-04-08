@@ -1,10 +1,10 @@
+import { faSearch, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faSearch}  from '@fortawesome/free-solid-svg-icons';
 import injectStyle from 'react-jss';
-import Colours from '../../resources/Colours';
-import logo_white from '../../resources/logo_white.png';
+import Colours from '../resources/Colours';
+import logo_white from '../resources/logo_white.png';
 
 /* TODOs! 
 - Add cart functionality.
