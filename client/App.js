@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import injectStyle from 'react-jss';
 import { Fade } from 'react-reveal';
-import Colours from '../client/resources/Colours'
+import Header from './admin/components/Header';
 import ProductList from './admin/components/ProductList';
 
 class App extends Component {
@@ -11,11 +11,6 @@ class App extends Component {
     super(props);
     this.state = {
     }
-  }
-
-
-  componentDidMount = () => {
-
   }
 
   // Reorder item list
@@ -26,8 +21,8 @@ class App extends Component {
     let newData = await fetch(`http://localhost:3000/api/products?_page=0&_limit=20`)
       .then(response => response.json())
       .then(nextData = await this.getNextPageData(this.state.curPage + 1, e.target.id))
-      this.setState({ data: newData, nextData: nextData, isLoading: false, curPage: this.state.curPage++  });
-      console.log(this.state.data, nextData)
+    this.setState({ data: newData, nextData: nextData, isLoading: false, curPage: this.state.curPage++ });
+    console.log(this.state.data, nextData)
   }
 
   // Removing event listener for scrolling.
@@ -41,9 +36,12 @@ class App extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.mainContainer}>
-        <Container>
-          <header>
+      <div className={classes.mainWrapper}>
+        <header>
+            <Header />
+        </header>
+        <Container className={classes.appBody}>
+          <Fade>
             <h1 className={classes.header}>Products Grid</h1>
 
             <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our
@@ -51,13 +49,13 @@ class App extends Component {
 
             {/* <p>But first, a word from our sponsors:</p>
           <script>document.write('<img className="ad" src="/ads/?r=' + Math.floor(Math.random() * 1000) + '" />');</script> */}
-          </header>
 
+          </Fade>
           <section className="products">
             {/* <p>... products go here ...</p> */}
-              <Fade when={!this.state.isLoading} appear={!this.state.isLoading}>
-                <ProductList isDataReady={this.isDataReady} />
-              </Fade>
+            <Fade when={!this.state.isLoading} appear={!this.state.isLoading}>
+              <ProductList isDataReady={this.isDataReady} />
+            </Fade>
           </section>
         </Container>
       </div>
@@ -66,11 +64,11 @@ class App extends Component {
 }
 
 const styles = {
-  header: {
-
+  appBody: {
+    marginTop: '10vh',
   },
-  mainContainer: {
-    backgroundColor: Colours.tertiary,
+  mainWrapper: {
+    // backgroundColor: Colours.tertiary,
     fontFamily: 'Hind Siliguri, sans-serif',
     minHeight: '100vh',
   }

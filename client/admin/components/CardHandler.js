@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Card, CardDeck, Col, Image, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Fade } from 'react-reveal';
 import injectStyle from 'react-jss';
 import Utils from '../../resources/Utils.js';
 
@@ -39,8 +40,10 @@ const CardHandler = (props) => {
                 </Card>
               </Col>
               <Col key={`imgcol${index}`} md={12} className={classes.imageStyle} >
-                <Image key={`img${index}`} src={`/ads/?r=${Math.floor(Math.random() * 1000)}`}
-                />
+                <Fade left>
+                  <Image key={`img${index}`} src={`/ads/?r=${Math.floor(Math.random() * 1000)}`}
+                  />
+                </Fade>
               </Col>
             </Fragment>
           )
@@ -59,9 +62,10 @@ const styles = {
     justifyContent: 'center',
   },
   itemCard: {
+    backgroundColor: 'transparent',
     margin: '1vh 0',
+    padding: '1vh 0',
     textAlign: 'center',
-    padding: '1vh 0'
   },
   itemFace: {
     // textAlign: 'center',

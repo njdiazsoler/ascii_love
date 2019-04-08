@@ -11,7 +11,8 @@ class ProductList extends Component {
     this.state = {
       data: [],
       curPage: 1,
-      isLoading: true
+      isLoading: true,
+      showDropdown: false,
     };
   }
 
@@ -26,7 +27,7 @@ class ProductList extends Component {
       const response = await fetch(`http://localhost:3000/api/products?_page=${this.state.curPage}&_limit=20`)
       const body = await response.json();
       // Blocking loop on purpose?
-      const nextData = await this.getNextPageData(this.state.curPage+1);
+      const nextData = await this.getNextPageData(this.state.curPage + 1);
       this.setState({ data: body, nextData: nextData, isLoading: false, curPage: this.state.curPage + 1 });
       window.addEventListener('scroll', this.onScroll, false);
     } catch (error) {
@@ -65,9 +66,9 @@ class ProductList extends Component {
     console.log(this.props.data);
     const { classes } = this.props;
     return (
-      <Container>
+      <Container className={classes.productSection}>
         <Dropdown drop='right'>
-          <Dropdown.Toggle className={classes.dropdownStyle} variant="light" id="dropdown-basic">
+          <Dropdown.Toggle variant="light" id="dropdown-basic">
             Order by
           </Dropdown.Toggle>
           <Dropdown.Menu>
@@ -76,12 +77,15 @@ class ProductList extends Component {
             <Dropdown.Item onClick={this.props.onClick} id='size'>Size</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        {this.state.isLoading ?
-          <img src='https://upload.wikimedia.org/wikipedia/commons/6/66/Loadingsome.gif' alt='loading...' style={{ maxWidth: '50vw', maxHeight: '50vh' }}></img> :
-          <Fade>
-            <CardHandler data={this.state.data} />
-          </Fade>
-        }
+        <Container className={classes.productContainer}>
+
+          {this.state.isLoading ?
+            <img src='https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif' alt='loading...' className={classes.appSpinner}></img> :
+            <Fade>
+              <CardHandler data={this.state.data} />
+            </Fade>
+          }
+        </Container>
       </Container>
 
     )
@@ -90,8 +94,29 @@ class ProductList extends Component {
 }
 
 const styles = {
+  appSpinner: {
+    maxWidth: '50vw',
+    maxHeight: '50vh'
+  },
   dropdownStyle: {
     backgroundColor: Colours.tertiary,
+  },
+  productContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  productDropdown: {
+    border: '1px solid black',
+    borderRadius: '.25rem',
+    display: 'block',
+    float: 'left',
+    maxHeight: '100%',
+    minWidth: '10vw',
+    position: 'absolute',
+  },
+  productSection: {
+    display: 'flex',
+    flexFlow: 'column',
   },
 
 };
