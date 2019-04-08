@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Dropdown } from 'react-bootstrap';
 import injectStyle from 'react-jss';
 import { Fade } from 'react-reveal';
@@ -12,7 +12,8 @@ class ProductList extends Component {
       data: [],
       curPage: 1,
       isLoading: true,
-      showDropdown: false,
+      moreToLoad: true,
+      dataLoaded: false,
     };
   }
 
@@ -28,7 +29,7 @@ class ProductList extends Component {
       const body = await response.json();
       // Blocking loop on purpose?
       const nextData = await this.getNextPageData(this.state.curPage + 1);
-      this.setState({ data: body, nextData: nextData, isLoading: false, curPage: this.state.curPage + 1 });
+      this.setState({ data: body, nextData: nextData, isLoading: false, dataLoaded: true, curPage: this.state.curPage + 1 });
       window.addEventListener('scroll', this.onScroll, false);
     } catch (error) {
       throw console.log(`error is ${error}`);
@@ -40,8 +41,9 @@ class ProductList extends Component {
   getNextPageData = async (page, orderBy) => {
     console.log(page);
     if (!orderBy) {
-      const response = await fetch(`http://localhost:3000/api/products?_page=${page}&_limit=20`)
+      const response = await fetch(`http://localhost:3000/api/products?_page=${page}&_limit=20`);
       const body = await response.json();
+      console.log(body);
       return body;
     }
     let response = await fetch(`http://localhost:3000/api/products?_page=${page}&_limit=20&_sort=${orderBy}`)
@@ -52,23 +54,29 @@ class ProductList extends Component {
   // onScroll Function to specify what happens when reaching the end of the page
 
   onScroll = async () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1)) {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1) && this.state.dataLoaded) {
+      this.setState({ dataLoaded: false });
       let { nextData, data, curPage } = this.state;
       nextData.forEach(item => {
         data.push(item);
       });
-      const newData = await this.getNextPageData(curPage++);
-      this.setState({ data: data, nextData: newData, curPage: curPage++ });
+      const newData = await this.getNextPageData(curPage+1);
+      this.setState({ data: data, nextData: newData, curPage: curPage+1, dataLoaded: true });
     }
   }
 
+  /* TODOs:
+  - Dropdown animation when clicking dropdown.
+  - Fade animation when revealing new data.
+
+  */
+
   render() {
-    console.log(this.props.data);
     const { classes } = this.props;
     return (
       <Container className={classes.productSection}>
         <Dropdown drop='right'>
-          <Dropdown.Toggle variant="light" id="dropdown-basic">
+          <Dropdown.Toggle variant='light' id='dropdown-basic' className={classes.dropdownButton}>
             Order by
           </Dropdown.Toggle>
           <Dropdown.Menu>
@@ -78,12 +86,26 @@ class ProductList extends Component {
           </Dropdown.Menu>
         </Dropdown>
         <Container className={classes.productContainer}>
-
           {this.state.isLoading ?
-            <img src='https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif' alt='loading...' className={classes.appSpinner}></img> :
-            <Fade>
-              <CardHandler data={this.state.data} />
-            </Fade>
+            <Fragment>
+              <Fade>
+                <img src='https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif' alt='loading...' className={classes.appSpinner}/>
+              </Fade>
+            </Fragment>:
+              <Fade>
+                <CardHandler data={this.state.data} />
+              </Fade>
+          }
+          {this.state.moreToLoad && !this.state.isLoading ?
+              <Fade>
+                <img src='https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif' alt='loading...' className={classes.appSpinner}/>
+              </Fade>
+            :
+            this.state.isLoading ?
+              null :
+              <Fade left>
+                <p>End of catalogue! (ಥ_ಥ)</p>
+              </Fade>
           }
         </Container>
       </Container>
@@ -95,24 +117,16 @@ class ProductList extends Component {
 
 const styles = {
   appSpinner: {
-    maxWidth: '50vw',
+    maxWidth: '30vw',
     maxHeight: '50vh'
   },
-  dropdownStyle: {
+  dropdownButton: {
     backgroundColor: Colours.tertiary,
   },
   productContainer: {
     display: 'flex',
-    justifyContent: 'center',
-  },
-  productDropdown: {
-    border: '1px solid black',
-    borderRadius: '.25rem',
-    display: 'block',
-    float: 'left',
-    maxHeight: '100%',
-    minWidth: '10vw',
-    position: 'absolute',
+    flexFlow: 'column',
+    alignItems: 'center',
   },
   productSection: {
     display: 'flex',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Fade } from 'react-reveal';
 import injectStyle from 'react-jss';
@@ -8,9 +8,9 @@ import logo_white from '../../resources/logo_white.png'
 const Header = (props) => {
   const { classes } = props;
   return (
-    <Fade left>
-      <Navbar expand='lg' variant='dark' className={classes.navBarCustom}>
-        <Navbar.Toggle aria-controls="basic-navbar" />
+    <Navbar expand='lg' variant='dark' className={classes.navBarCustom} >
+      <Navbar.Toggle aria-controls='basic-navbar' />
+      <Fade left>
         <Navbar.Brand href='#home'>
           <div className={classes.appLogo}>
             <img
@@ -22,6 +22,8 @@ const Header = (props) => {
             />
           </div>
         </Navbar.Brand>
+      </Fade>
+      <Fade left>
         <Navbar.Collapse id='basic-navbar' className={classes.appHeader}>
 
           <Nav defaultActiveKey='#shop' className={classes.appNavBar}>
@@ -40,8 +42,8 @@ const Header = (props) => {
           </Nav>
           {/* </Fade> */}
         </Navbar.Collapse>
-      </Navbar>
-    </Fade>
+      </Fade>
+    </Navbar>
   )
 }
 
@@ -94,8 +96,10 @@ const styles = {
   },
   navBarCustom: {
     backgroundColor: Colours.primary,
+    display: 'flex',
+    flexFlow: 'row',
+    justifyContent: 'space-between',
     marginBottom: '1px',
-    overflow: 'hidden',
     padding: '1vh 10vw',
   },
   navText: {
