@@ -1,6 +1,11 @@
 body {
-  background-color: #FAD8D6;
   font-family: 'Martel', serif;
+  overflow-y: scroll;
+}
+
+html {
+  width:100vw;
+  overflow-x:hidden;
 }
 
 h1 {

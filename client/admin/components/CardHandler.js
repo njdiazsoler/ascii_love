@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Card, CardDeck, Col, Image, ListGroup, ListGroupItem } from "react-bootstrap";
 import { Fade } from 'react-reveal';
 import injectStyle from 'react-jss';
@@ -6,7 +6,7 @@ import Utils from '../../resources/Utils.js';
 
 const CardHandler = (props) => {
   const { classes } = props
-  // console.log(props.data);
+
   return (
     <CardDeck style={{ alignItems: 'center', justifyContent: 'center'}}>
       {props.data ?
@@ -19,7 +19,7 @@ const CardHandler = (props) => {
               colSize = 2
             }
             return (
-              <Col key={`col${index}`} xs={colSize} lg={colSize} className={classes.itemCard}>
+              <Col key={`col${index}`} xs='auto' lg={colSize} className={classes.itemCard}>
                 <Card key={`card${index}`}>
                   <Card.Body className={classes.itemFace} style={{ fontSize: item.size }} key={`body${index}`}>
                     {item.face}
@@ -35,7 +35,7 @@ const CardHandler = (props) => {
           }
           return (
             <Fragment key={`fragment${index}`}>
-              <Col key={`col${index}`} xs={4} lg={3} className={classes.itemCard}>
+              <Col key={`col${index}`} xs='auto' lg={3} className={classes.itemCard}>
                 <Card key={`card${index}`}>
                   <Card.Body className={classes.itemFace} style={{ fontSize: item.size }} key={`body${index}`}>
                     {item.face}
@@ -48,8 +48,8 @@ const CardHandler = (props) => {
                 </Card>
               </Col>
               <Col key={`imgcol${index}`} md={12} className={classes.imageStyle} >
-                <Fade left>
-                  <Image key={`img${index}`} src={`/ads/?r=${Math.floor(Math.random() * 1000)}`}
+              <Fade left>
+                <img key={`img${index}`} src={Utils.getAdUrl()}
                   />
                 </Fade>
               </Col>

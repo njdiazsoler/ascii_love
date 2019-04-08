@@ -1,31 +1,29 @@
-import React, { Fragment } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
-import { Fade } from 'react-reveal';
+import React from 'react';
+import { Nav, Navbar } from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faShoppingCart, faSearch}  from '@fortawesome/free-solid-svg-icons';
 import injectStyle from 'react-jss';
 import Colours from '../../resources/Colours';
-import logo_white from '../../resources/logo_white.png'
+import logo_white from '../../resources/logo_white.png';
+
+/* TODOs! 
+- Add cart functionality.
+- Add search functionality.
+*/
 
 const Header = (props) => {
   const { classes } = props;
   return (
     <Navbar expand='lg' variant='dark' className={classes.navBarCustom} >
       <Navbar.Toggle aria-controls='basic-navbar' />
-      <Fade left>
-        <Navbar.Brand href='#home'>
-          <div className={classes.appLogo}>
+    <Navbar.Brand href='#home'>
             <img
               src={logo_white}
-              //  width="90"
-              //  height="30"
               className={classes.appLogo}
               alt="ASCII Love logo"
             />
-          </div>
         </Navbar.Brand>
-      </Fade>
-      <Fade left>
         <Navbar.Collapse id='basic-navbar' className={classes.appHeader}>
-
           <Nav defaultActiveKey='#shop' className={classes.appNavBar}>
             <Nav.Item as='li'>
               <Nav.Link eventKey='#home' className={classes.navText} href="#home">Home</Nav.Link>
@@ -36,13 +34,19 @@ const Header = (props) => {
             <Nav.Item>
               <Nav.Link eventKey='#shop' to='shop' className={classes.navText} href="#shop">Shop</Nav.Link>
             </Nav.Item>
+            {/* NavLinks used as placeholders for icon functionality */}
             <Nav.Item>
-              <Nav.Link eventKey='contact_form' to='contact_form' className={classes.navText} href="#contact_form">Contacto</Nav.Link>
+              <Nav.Link className={classes.navText} href="#cart">
+              <FontAwesomeIcon size='md'  icon={faShoppingCart} />
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link className={classes.navText} href="#search">
+              <FontAwesomeIcon size='md' icon={faSearch} />
+              </Nav.Link>
             </Nav.Item>
           </Nav>
-          {/* </Fade> */}
         </Navbar.Collapse>
-      </Fade>
     </Navbar>
   )
 }
@@ -50,9 +54,11 @@ const Header = (props) => {
 const styles = {
   '@keyframes fadeIn': {
     from: {
+      left: '-10%',
       opacity: '0',
     },
     to: {
+      left:'0%',  
       opacity: '1',
     },
   },
@@ -61,14 +67,18 @@ const styles = {
     display: 'flex',
     flexFlow: 'row',
     justifyContent: 'flex-end',
+    overflow: 'hidden',
+    left: '-10%',
     '@media screen and (max-width: 768px)': {
       display: 'flex',
       flexFlow: 'column',
     },
   },
   appLogo: {
+    animation: 'fadeIn 3s',
     display: 'flex',
     height: '7vh!important',
+    left: '-20%',
     verticalAlign: 'top',
   },
   appNavBar: {
@@ -97,7 +107,6 @@ const styles = {
   navBarCustom: {
     backgroundColor: Colours.primary,
     display: 'flex',
-    flexFlow: 'row',
     justifyContent: 'space-between',
     marginBottom: '1px',
     padding: '1vh 10vw',
